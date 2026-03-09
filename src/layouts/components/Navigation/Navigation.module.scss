@@ -1,0 +1,104 @@
+$hover-blue: #0088cc;
+$bg-dropdown: #2c2c2c;
+$bg-dropdown-hover: #1f1f1f;
+$border-color: #3c3c3c;
+
+.wrapper {
+  .mainMenu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .menuItem {
+      position: relative;
+      padding: 22px 0;
+      white-space: nowrap;
+
+      > a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $hover-blue;
+        }
+
+        &.active {
+          color: $hover-blue;
+          font-weight: bold;
+        }
+      }
+
+      &:hover > .dropdown {
+        display: block;
+      }
+    }
+  }
+
+  .dropdown,
+  .subDropdown,
+  .deepDropdown {
+    display: none;
+    position: absolute;
+    background-color: $bg-dropdown;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    z-index: 100;
+  }
+
+  .dropdown {
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+  }
+
+  .subDropdown,
+  .deepDropdown {
+    top: 0;
+    left: 100%;
+    min-width: 200px;
+  }
+
+  .dropdownItem,
+  .subDropdownItem {
+    position: relative;
+
+    > a {
+      display: block;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 14px 20px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid $border-color;
+      font-weight: normal;
+
+      &:hover {
+        color: $hover-blue;
+        background-color: $bg-dropdown-hover;
+      }
+
+      &.active {
+        color: $hover-blue;
+        background-color: $bg-dropdown-hover;
+        font-weight: bold;
+      }
+    }
+
+    &:last-child > a {
+      border-bottom: none;
+    }
+
+    &:hover > .subDropdown,
+    &:hover > .deepDropdown {
+      display: block;
+    }
+  }
+}
