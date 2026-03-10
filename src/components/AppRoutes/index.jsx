@@ -16,6 +16,9 @@ import DefaultLayout from "@/layouts/DefaultLayout";
 
 // Components
 import ScrollToTop from "@/components/ScrollToTop";
+import Collection from "@/pages/Collection";
+import ProductDetail from "@/pages/ProductDetail";
+import Cart from "@/pages/Cart";
 // import Loading from "@/components/Loading";
 // import Cleanup from "@/pages/Cleanup";
 // import Cleanup2 from "@/pages/Cleanup2";
@@ -44,6 +47,10 @@ function AppRoutes() {
         {/* Default layout pages */}
         <Route element={<DefaultLayout />}>
           <Route index element={<Home />} />
+          <Route path="/:slug" element={<Collection />} />
+          <Route path="/detail" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          {/* <Route path="/:slug/:productId" element={<ProductDetail />} /> */}
           {/* <Route path="news" element={<News />} />
           <Route path="news/:id" element={<PostDetail />} />
           <Route path="contact" element={<Contact />} />

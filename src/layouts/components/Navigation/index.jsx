@@ -1,7 +1,6 @@
 import { NavLink } from "react-router";
-import styles from "./Navigation.module.scss";
 
-const navItems = [
+export const navItems = [
   {
     to: "/macbook-cu-moi",
     title: "Macbook",
@@ -84,23 +83,37 @@ const MenuItem = ({ item, depth = 0 }) => {
 
   let liClass = "";
   let ulClass = "";
+  let aClass = "";
+  let activeClass = "";
 
   if (isMainMenu) {
-    liClass = styles.menuItem;
-    ulClass = styles.dropdown;
+    liClass = "relative py-[22px] whitespace-nowrap group/main";
+    ulClass =
+      "hidden absolute top-full left-0 min-w-[220px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/main:block";
+    aClass =
+      "text-white no-underline text-sm transition-colors duration-200 ease-in-out hover:text-[#0088cc]";
+    activeClass = "text-[#0088cc] font-bold";
   } else if (depth === 1) {
-    liClass = styles.dropdownItem;
-    ulClass = styles.subDropdown;
+    liClass = "relative group/sub last:[&>a]:border-b-0";
+    ulClass =
+      "hidden absolute top-0 left-full min-w-[200px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/sub:block";
+    aClass =
+      "block text-white no-underline px-5 py-[14px] text-sm transition-all duration-200 ease-in-out border-b border-[#3c3c3c] font-normal hover:text-[#0088cc] hover:bg-[#1f1f1f]";
+    activeClass = "text-[#0088cc] bg-[#1f1f1f] font-bold";
   } else {
-    liClass = styles.subDropdownItem;
-    ulClass = styles.deepDropdown;
+    liClass = "relative group/deep last:[&>a]:border-b-0";
+    ulClass =
+      "hidden absolute top-0 left-full min-w-[200px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/deep:block";
+    aClass =
+      "block text-white no-underline px-5 py-[14px] text-sm transition-all duration-200 ease-in-out border-b border-[#3c3c3c] font-normal hover:text-[#0088cc] hover:bg-[#1f1f1f]";
+    activeClass = "text-[#0088cc] bg-[#1f1f1f] font-bold";
   }
 
   return (
     <li className={liClass}>
       <NavLink
-        className={({ isActive }) => (isActive ? styles.active : "")}
         to={item.to}
+        className={({ isActive }) => `${aClass} ${isActive ? activeClass : ""}`}
       >
         {item.title}
       </NavLink>
@@ -117,8 +130,8 @@ const MenuItem = ({ item, depth = 0 }) => {
 
 function Navigation() {
   return (
-    <nav className={styles.wrapper}>
-      <ul className={styles.mainMenu}>
+    <nav>
+      <ul className="flex items-center gap-8 list-none m-0 p-0">
         {navItems.map((item, index) => (
           <MenuItem key={index} item={item} />
         ))}

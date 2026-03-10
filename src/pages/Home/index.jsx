@@ -4,9 +4,7 @@ import macair from "@/assets/img/macair.jpg";
 import banner1 from "@/assets/img/banner1.jpg";
 import banner2 from "@/assets/img/banner2.jpg";
 
-import styles from "./Home.module.scss";
-
-import { faLaptop, faDesktop } from "@fortawesome/free-solid-svg-icons";
+import { faLaptop } from "@fortawesome/free-solid-svg-icons";
 import BannerSlider from "@/layouts/components/BannerSlider";
 import CategorySlider from "@/layouts/components/CategorySlider";
 import ProductSection from "@/layouts/components/ProductSection";
@@ -34,7 +32,6 @@ function Home() {
     { title: "iPhone", image: macbook, link: "/iphone" },
     { title: "iPhone", image: macbook, link: "/iphone" },
     { title: "iPhone", image: macbook, link: "/iphone" },
-    // Có thể thêm nhiều hơn, Swiper sẽ tự động sinh thanh trượt
   ];
 
   const macbookAirTags = [
@@ -78,7 +75,6 @@ function Home() {
       image: macair,
       badge: "SẴN HÀNG",
       badgeColor: "#8cc63f",
-      // seal: "/images/seal-may-ban-chay.png",
       link: "/san-pham/macbook-air-m1",
     },
   ];
@@ -93,7 +89,6 @@ function Home() {
       image: macair,
       badge: "SẴN HÀNG",
       badgeColor: "#8cc63f",
-      // seal: "/images/seal-m4.png",
       link: "/san-pham/mac-mini-2024",
     },
     {
@@ -103,7 +98,6 @@ function Home() {
       image: macair,
       badge: "SẴN HÀNG",
       badgeColor: "#8cc63f",
-      // seal: "/images/seal-m4.png",
       link: "/san-pham/imac-m4",
     },
     {
@@ -120,7 +114,6 @@ function Home() {
       specs: "Apple M4 24GB RAM 512GB SSD 8-Core GPU - NEW",
       price: "42.890.000đ",
       image: macair,
-      // seal: "/images/seal-m4.png",
       link: "/san-pham/imac-m4-24gb",
     },
   ];
@@ -140,7 +133,6 @@ function Home() {
     },
   ];
 
-  // Thêm mảng tags cho MacBook Pro
   const macbookProTags = [
     "MacBook Pro M5",
     "MacBook Pro M4",
@@ -150,7 +142,6 @@ function Home() {
     "MacBook Pro Intel",
   ];
 
-  // Thêm mảng sản phẩm cho MacBook Pro
   const macbookProProducts = [
     {
       name: "MacBook Pro 2025 14 inch",
@@ -186,7 +177,6 @@ function Home() {
       image: macair,
       badge: "SẴN HÀNG",
       badgeColor: "#8cc63f",
-      // seal: "/images/seal-m4-pro.png",
       link: "/san-pham/macbook-pro-m4-14",
     },
   ];
@@ -226,7 +216,6 @@ function Home() {
       image: macair,
       badge: "BÁN CHẠY",
       badgeColor: "#ff0000",
-      // seal: "/images/logo-ugreen.png", // Bạn lưu logo Ugreen vào đây nhé
       link: "/san-pham/ugreen-hub",
     },
     {
@@ -237,14 +226,18 @@ function Home() {
       link: "/san-pham/logitech-pebble",
     },
   ];
+
   return (
     <>
       <BannerSlider slides={bannerData} />
-      <div className={styles["trust-bar"]}>
-        <strong>iTuong</strong> - Đại lý uỷ quyền chính thức của Apple Việt Nam
-        (AAR)
+
+      <div className="w-full bg-[#1a1a1a] text-white text-center py-3 px-[15px] text-[15px] flex items-center justify-center flex-wrap">
+        <strong className="font-bold mr-[5px]">iTuong</strong> - Đại lý uỷ quyền
+        chính thức của Apple Việt Nam (AAR)
       </div>
+
       <CategorySlider categories={categoriesData} />
+
       <ProductSection
         icon={faLaptop}
         title="MacBook Air"
@@ -276,7 +269,7 @@ function Home() {
 
       <ProductSection
         title="Phụ kiện"
-        icon={faLaptop} // Có thể đổi thành icon faHeadphones hoặc faPlug tuỳ ý
+        icon={faLaptop}
         tags={phuKienTags}
         products={phuKienProducts}
         viewAllLink="/danh-muc/phu-kien"

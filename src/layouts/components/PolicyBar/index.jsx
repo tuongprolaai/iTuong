@@ -5,7 +5,6 @@ import {
   faThumbsUp,
   faDollarSign,
 } from "@fortawesome/free-solid-svg-icons";
-import styles from "./PolicyBar.module.scss";
 
 const policies = [
   {
@@ -32,17 +31,20 @@ const policies = [
 
 function PolicyBar() {
   return (
-    <section className={styles.policyBar}>
-      <div className="container">
-        <div className={styles.grid}>
+    <section className="bg-[#1f1f1f] py-[30px] text-white border-t-2 border-[#333333]">
+      <div className="container mx-auto px-[15px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[20px] sm:gap-y-[30px] lg:gap-y-[20px]">
           {policies.map((item, index) => (
-            <div key={index} className={styles.item}>
-              <div className={styles.iconBox}>
+            <div key={index} className="flex items-center gap-[15px]">
+              {/* Đã đổi màu icon từ xanh lá (#54b22c) sang xanh biển (#007bff) */}
+              <div className="text-[32px] text-[#007bff] flex items-center justify-center w-[40px]">
                 <FontAwesomeIcon icon={item.icon} />
               </div>
-              <div className={styles.info}>
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
+              <div>
+                <h4 className="text-[14px] font-bold m-0 mb-[5px] uppercase">
+                  {item.title}
+                </h4>
+                <p className="text-[13px] text-[#cccccc] m-0">{item.desc}</p>
               </div>
             </div>
           ))}
