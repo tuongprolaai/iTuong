@@ -1,64 +1,67 @@
 import { Link } from "react-router";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+const badgeStyles = {
+    "SẴN HÀNG": "bg-green-500 text-white hover:bg-green-500",
+    "BÁN CHẠY": "bg-red-500 text-white hover:bg-red-500",
+    MỚI: "bg-blue-500 text-white hover:bg-blue-500",
+    "TẠM HẾT": "bg-zinc-400 text-white hover:bg-zinc-400",
+};
 
 function ProductCard({ data }) {
-  if (!data) return null;
+    if (!data) return null;
 
-  const {
-    link = "/detail",
-    name,
-    image,
-    specs,
-    price,
-    badge,
-    badgeColor = "#ff0000",
-    seal,
-  } = data;
+    const { link = "/detail", name, image, specs, price, badge } = data;
 
-  return (
-    <Link
-      to={link}
-      className="relative flex flex-col bg-white rounded-[8px] pt-[30px] px-[15px] pb-[15px] no-underline text-[#333] transition-all duration-300 ease-in-out hover:shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:-translate-y-[2px]"
-    >
-      {/* Badge */}
-      {badge && (
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 text-white text-[11px] font-bold px-[12px] py-[4px] rounded-b-[4px] z-[2] whitespace-nowrap"
-          style={{ backgroundColor: badgeColor }}
-        >
-          {badge}
-        </div>
-      )}
+    return (
+        <Link to={link} className="group block h-full">
+            <Card className="relative flex h-full flex-col border transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                {/* Badge */}
+                {badge && (
+                    <Badge
+                        className={`absolute top-2 left-2 px-2 py-0.5 text-[11px] ${badgeStyles[badge]}`}
+                    >
+                        {badge}
+                    </Badge>
+                )}
 
-      {/* Seal */}
-      {seal && (
-        <div className="absolute top-[10px] left-[10px] w-[45px] h-[45px] z-[2]">
-          <img src={seal} alt="seal" className="w-full h-full object-contain" />
-        </div>
-      )}
+                <CardContent className="flex flex-1 flex-col p-4 text-center">
+                    {/* Image */}
+                    <AspectRatio ratio={4 / 3} className="mb-4">
+                        <div className="flex h-full w-full items-center justify-center overflow-hidden">
+                            <img
+                                src={image}
+                                alt={name}
+                                loading="lazy"
+                                className="max-h-full max-w-[90%] object-contain transition-transform duration-500 group-hover:scale-105"
+                                onError={(e) => {
+                                    e.currentTarget.src =
+                                        "/images/product-placeholder.png";
+                                }}
+                            />
+                        </div>
+                    </AspectRatio>
 
-      {/* Image */}
-      <div className="w-full h-[180px] flex items-center justify-center mb-[15px]">
-        <img
-          src={image}
-          alt={name}
-          className="max-w-[90%] max-h-full object-contain"
-        />
-      </div>
+                    {/* Name */}
+                    <h3 className="min-h-[40px] line-clamp-2 text-sm font-semibold">
+                        {name}
+                    </h3>
 
-      {/* Content */}
-      <div className="text-center flex flex-col flex-1">
-        <h3 className="text-[15px] font-bold mb-[5px] text-[#111] line-clamp-2">
-          {name}
-        </h3>
+                    {/* Specs */}
+                    <p className="mt-1 min-h-[32px] line-clamp-2 text-xs text-muted-foreground">
+                        {specs}
+                    </p>
 
-        <p className="text-[12px] text-[#666] mb-[15px] leading-[1.4] flex-1 line-clamp-2">
-          {specs}
-        </p>
-
-        <p className="text-[16px] font-bold text-[#ff0000]">{price}</p>
-      </div>
-    </Link>
-  );
+                    {/* Price */}
+                    <p className="mt-auto pt-3 text-base font-semibold">
+                        {price}
+                    </p>
+                </CardContent>
+            </Card>
+        </Link>
+    );
 }
 
 export default ProductCard;

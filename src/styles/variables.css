@@ -1,0 +1,24 @@
+@layer base {
+    :root {
+        --text-color: #333333;
+        --bg-color: #ffffff;
+
+        --primary: #0088cc;
+        --primary-foreground: #ffffff;
+    }
+
+    html.dark {
+        --text-color: #ffffff;
+        --bg-color: #1a1a1a;
+
+        --primary: #0088cc;
+        --primary-foreground: #ffffff;
+    }
+}
+
+@layer base {
+    body {
+        color: var(--text-color);
+        background-color: var(--bg-color);
+    }
+}

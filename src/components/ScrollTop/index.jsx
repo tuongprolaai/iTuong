@@ -1,39 +1,43 @@
 import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import styles from "./ScrollTop.module.scss";
+import { ArrowUp } from "lucide-react";
 
-function ScrollTop() {
-  const [isVisible, setIsVisible] = useState(false);
+import { Button } from "@/components/ui/button";
 
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+export default function ScrollTop() {
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        const toggleVisibility = () => {
+            setVisible(window.scrollY > 300);
+        };
+
+        window.addEventListener("scroll", toggleVisibility);
+        return () => window.removeEventListener("scroll", toggleVisibility);
+    }, []);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
     };
 
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  return (
-    <button
-      className={`${styles.scrollToTop} ${isVisible ? styles.visible : ""}`}
-      onClick={scrollToTop}
-    >
-      <FontAwesomeIcon icon={faArrowUp} />
-    </button>
-  );
+    return (
+        <Button
+            size="icon"
+            onClick={scrollToTop}
+            className={`
+        fixed bottom-10 left-10 z-50
+        shadow-lg
+        transition-all duration-300
+        ${
+            visible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4 pointer-events-none"
+        }
+      `}
+        >
+            <ArrowUp className="h-5 w-5" />
+        </Button>
+    );
 }
-
-export default ScrollTop;

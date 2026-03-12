@@ -1,164 +1,309 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router";
-import logo from "@/assets/logo/logo.png";
-import Navigation, { navItems } from "../Navigation"; // Import navItems đã export ở trên
-import SearchModal from "../SearchModal/SearchModal";
+import { Link } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMagnifyingGlass,
-  faCartShopping,
-  faBars,
-  faXmark,
-  faChevronDown,
-  faChevronUp,
+    faMagnifyingGlass,
+    faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Component con đệ quy để render Menu Mobile nhiều cấp
-const MobileMenuItem = ({ item, onClickClose }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const hasChildren = item.children && item.children.length > 0;
+import logo from "@/assets/logo/logo.png";
 
-  return (
-    <div className="border-b border-[#1a1a1a]">
-      <div className="flex items-center justify-between px-[20px] py-[10px]">
-        <NavLink
-          to={item.to}
-          className={({ isActive }) =>
-            `text-[15px] flex-grow py-2 no-underline ${
-              isActive ? "text-[#0088cc] font-bold" : "text-white font-medium"
-            }`
-          }
-          onClick={onClickClose}
-        >
-          {item.title}
-        </NavLink>
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from "@/components/ui/popover";
 
-        {hasChildren && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`w-[40px] h-[40px] flex items-center justify-center rounded transition-colors duration-200 ${
-              isOpen
-                ? "bg-[#007bff] text-white" // Đã chuyển thành xanh biển
-                : "bg-[#1a1a1a] text-[#cccccc]"
-            }`}
-          >
-            <FontAwesomeIcon
-              icon={isOpen ? faChevronUp : faChevronDown}
-              className="text-[12px]"
+import SearchModal from "../SearchModal/SearchModal";
+import MobileMenu from "../MobileMenu";
+import { ModeToggle } from "@/components/mode-toggle";
+import Navigation from "../Navigation";
+
+import { Trash2 } from "lucide-react";
+
+export default function Header() {
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [openCart, setOpenCart] = useState(false);
+    const [cartItems, setCartItems] = useState([
+        {
+            id: 1,
+            name: "MacBook Pro M3 14 inch",
+            price: 39990000,
+            quantity: 1,
+            image: "https://placehold.co/60x60",
+        },
+        {
+            id: 2,
+            name: "MacBook Air M2 13 inch",
+            price: 26990000,
+            quantity: 1,
+            image: "https://placehold.co/60x60",
+        },
+        {
+            id: 3,
+            name: "AirPods Pro 2",
+            price: 5990000,
+            quantity: 1,
+            image: "https://placehold.co/60x60",
+        },
+    ]);
+
+    const increaseQty = (id) => {
+        setCartItems((prev) =>
+            prev.map((item) =>
+                item.id === id
+                    ? { ...item, quantity: item.quantity + 1 }
+                    : item,
+            ),
+        );
+    };
+
+    const decreaseQty = (id) => {
+        setCartItems((prev) =>
+            prev.map((item) =>
+                item.id === id && item.quantity > 1
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item,
+            ),
+        );
+    };
+
+    const totalPrice = cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0,
+    );
+
+    const formatPrice = (price) =>
+        new Intl.NumberFormat("vi-VN").format(price) + "đ";
+
+    const removeItem = (id) => {
+        setCartItems((prev) => prev.filter((item) => item.id !== id));
+    };
+    return (
+        <>
+            <SearchModal
+                isOpen={isSearchOpen}
+                onRequestClose={() => setIsSearchOpen(false)}
             />
-          </button>
-        )}
-      </div>
 
-      {/* Render đệ quy nếu có menu con và đang mở */}
-      {hasChildren && isOpen && (
-        <div className="bg-[#0a0a0a] pl-[15px]">
-          {item.children.map((child, index) => (
-            <MobileMenuItem
-              key={index}
-              item={child}
-              onClickClose={onClickClose}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+            <header className="sticky top-0 z-50 flex h-16 w-full items-center border-b border-border bg-white/85 dark:bg-zinc-950/85 font-sans backdrop-blur-md">
+                <div className="container mx-auto flex h-full max-w-7xl items-center justify-between px-4 lg:px-10">
+                    {/* Left */}
+                    <div className="flex flex-1 items-center gap-2">
+                        <MobileMenu />
 
-function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+                        <Link to="/">
+                            <img
+                                src={logo}
+                                alt="MacOne Logo"
+                                loading="eager"
+                                decoding="async"
+                                className="h-10 w-auto cursor-pointer object-contain lg:h-12"
+                            />
+                        </Link>
+                    </div>
 
-  return (
-    <>
-      <header className="sticky top-0 z-[1000] w-full bg-black h-16 font-sans">
-        <SearchModal
-          isOpen={isSearchOpen}
-          onRequestClose={() => setIsSearchOpen(false)}
-        />
+                    {/* Navigation */}
+                    <div className="hidden flex-[2] justify-center lg:flex">
+                        <Navigation />
+                    </div>
 
-        <div className="container mx-auto h-full flex items-center justify-between px-4 lg:px-10">
-          {/* Left Section */}
-          <div className="flex-1 flex items-center">
-            {/* Nút Hamburger cho màn hình nhỏ */}
-            <button
-              className="lg:hidden text-white text-[24px] mr-4 cursor-pointer"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </button>
-            <img
-              src={logo}
-              alt="MacOne Logo"
-              className="h-10 lg:h-20 w-auto object-contain cursor-pointer"
-            />
-          </div>
+                    {/* Right */}
+                    <div className="flex flex-1 items-center justify-end gap-2 lg:gap-4">
+                        {/* Search */}
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Tìm kiếm"
+                            onClick={() => setIsSearchOpen(true)}
+                        >
+                            <FontAwesomeIcon
+                                icon={faMagnifyingGlass}
+                                className="text-xl"
+                            />
+                        </Button>
 
-          {/* Center Section (Ẩn trên màn hình nhỏ, hiện trên màn lg trở lên) */}
-          <div className="hidden lg:flex flex-[2] justify-center">
-            <Navigation />
-          </div>
+                        {/* Cart hover */}
+                        <Popover open={openCart} onOpenChange={setOpenCart}>
+                            {/* Trigger */}
+                            <PopoverTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    aria-label="Giỏ hàng"
+                                    className="relative"
+                                    onMouseEnter={() => setOpenCart(true)}
+                                    onMouseLeave={() => setOpenCart(false)}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faCartShopping}
+                                        className="text-xl"
+                                    />
 
-          {/* Right Section */}
-          <div className="flex-1 flex justify-end items-center gap-4 lg:gap-6">
-            <FontAwesomeIcon
-              icon={faMagnifyingGlass}
-              title="Tìm kiếm"
-              className="text-[20px] text-white cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#0088cc]"
-              onClick={() => setIsSearchOpen(true)}
-            />
-<Link to="/cart">
-  <FontAwesomeIcon
-    icon={faCartShopping}
-    title="Giỏ hàng"
-    className="text-[20px] text-white cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#0088cc]"
-  />
-</Link>
-          </div>
-        </div>
-      </header>
+                                    {cartItems.length > 0 && (
+                                        <Badge
+                                            className="
+                                                absolute -top-1 -right-1
+                                                h-5 min-w-[20px]
+                                                px-1
+                                                flex items-center justify-center
+                                                text-[11px]
+                                                rounded-full
+                                                "
+                                        >
+                                            {cartItems.length > 99
+                                                ? "99+"
+                                                : cartItems.length}
+                                        </Badge>
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
 
-      {/* MOBILE MENU SIDEBAR & OVERLAY */}
-      {/* Lớp nền mờ */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/70 z-[1010] lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
+                            {/* Content */}
+                            <PopoverContent
+                                sideOffset={-4}
+                                align="end"
+                                className="w-[320px] p-0 rounded-xl shadow-xl"
+                                onMouseEnter={() => setOpenCart(true)}
+                                onMouseLeave={() => setOpenCart(false)}
+                            >
+                                {/* Header */}
+                                <div className="px-4 py-3 text-sm font-semibold border-b">
+                                    Giỏ hàng ({cartItems.length})
+                                </div>
 
-      {/* Thanh Menu trượt ra */}
-      <div
-        className={`fixed top-0 left-0 h-screen w-[85vw] sm:w-[350px] bg-black z-[1020] transform transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Header của Mobile Menu */}
-        <div className="h-16 px-4 border-b border-[#333333] flex items-center justify-between shrink-0">
-          <button
-            className="text-white text-[24px] cursor-pointer"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
-          {/* Logo trong menu */}
-          <img src={logo} alt="Logo" className="h-8 w-auto object-contain" />
-        </div>
+                                {/* EMPTY CART */}
+                                {cartItems.length === 0 && (
+                                    <div className="py-10 flex flex-col items-center justify-center text-sm text-muted-foreground gap-2">
+                                        <FontAwesomeIcon
+                                            icon={faCartShopping}
+                                            className="text-2xl opacity-40"
+                                        />
+                                        Giỏ hàng của bạn đang trống
+                                    </div>
+                                )}
 
-        {/* Danh sách Menu dọc */}
-        <div className="flex-grow overflow-y-auto pb-[20px]">
-          {navItems.map((item, index) => (
-            <MobileMenuItem
-              key={index}
-              item={item}
-              onClickClose={() => setIsMobileMenuOpen(false)}
-            />
-          ))}
-        </div>
-      </div>
-    </>
-  );
+                                {/* Product list */}
+                                {cartItems.length > 0 && (
+                                    <>
+                                        <ScrollArea className="max-h-[260px]">
+                                            <div className="p-2 space-y-1">
+                                                {cartItems.map((item) => (
+                                                    <div
+                                                        key={item.id}
+                                                        className="
+                flex items-center gap-3
+                p-2.5 rounded-lg
+                hover:bg-muted
+                transition-colors
+                "
+                                                    >
+                                                        <img
+                                                            src={item.image}
+                                                            alt={item.name}
+                                                            className="
+                  w-12 h-12
+                  rounded-md
+                  border
+                  bg-white
+                  object-contain
+                  p-1
+                  "
+                                                        />
+
+                                                        <div className="flex flex-col flex-1 text-sm">
+                                                            <span className="line-clamp-2 font-medium">
+                                                                {item.name}
+                                                            </span>
+
+                                                            <span className="text-primary font-semibold">
+                                                                {formatPrice(
+                                                                    item.price,
+                                                                )}
+                                                            </span>
+
+                                                            {/* quantity */}
+                                                            <div className="flex items-center gap-2 mt-1">
+                                                                <Button
+                                                                    size="icon"
+                                                                    variant="outline"
+                                                                    className="h-6 w-6"
+                                                                    onClick={() =>
+                                                                        decreaseQty(
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    -
+                                                                </Button>
+
+                                                                <span className="text-sm w-4 text-center">
+                                                                    {
+                                                                        item.quantity
+                                                                    }
+                                                                </span>
+
+                                                                <Button
+                                                                    size="icon"
+                                                                    variant="outline"
+                                                                    className="h-6 w-6"
+                                                                    onClick={() =>
+                                                                        increaseQty(
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    +
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* remove */}
+                                                        <Button
+                                                            size="icon"
+                                                            variant="ghost"
+                                                            className="h-8 w-8 text-muted-foreground hover:text-red-500"
+                                                            onClick={() =>
+                                                                removeItem(
+                                                                    item.id,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </Button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </ScrollArea>
+
+                                        {/* Footer */}
+                                        <div className="border-t p-3 space-y-3">
+                                            <div className="flex justify-between text-sm font-semibold">
+                                                <span>Tổng tiền</span>
+                                                <span className="text-primary">
+                                                    {formatPrice(totalPrice)}
+                                                </span>
+                                            </div>
+
+                                            <Button asChild className="w-full">
+                                                <Link to="/cart">
+                                                    Xem giỏ hàng
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                    </>
+                                )}
+                            </PopoverContent>
+                        </Popover>
+
+                        {/* Dark mode */}
+                        <ModeToggle />
+                    </div>
+                </div>
+            </header>
+        </>
+    );
 }
-
-export default Header;

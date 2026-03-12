@@ -1,143 +1,72 @@
-import { NavLink } from "react-router";
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { navItems } from "./navItems";
+import { Link } from "react-router";
 
-export const navItems = [
-  {
-    to: "/macbook-cu-moi",
-    title: "Macbook",
-    children: [
-      {
-        to: "/macbook-air-moi-cu",
-        title: "MacBook Air",
-        children: [
-          { to: "/macbook-air-m4", title: "MacBook Air M4" },
-          { to: "/macbook-air-m3", title: "MacBook Air M3" },
-          { to: "/macbook-air-m2", title: "MacBook Air M2" },
-          { to: "/macbook-air-m1", title: "MacBook Air M1" },
-          {
-            to: "/macbook-air-intel",
-            title: "MacBook Air Intel",
-            children: [
-              { to: "/macbook-air-2020", title: "MacBook Air 2020" },
-              { to: "/macbook-air-2019", title: "MacBook Air 2019" },
-              { to: "/macbook-air-2018", title: "MacBook Air 2018" },
-              { to: "/macbook-air-2017", title: "MacBook Air 2017" },
-            ],
-          },
-        ],
-      },
-      {
-        to: "/macbook-pro-moi-cu",
-        title: "MacBook Pro",
-        children: [
-          { to: "/macbook-pro-m5", title: "MacBook Pro M5" },
-          { to: "/macbook-pro-m4", title: "MacBook Pro M4" },
-          { to: "/macbook-pro-m3", title: "MacBook Pro M3" },
-          { to: "/macbook-pro-m2", title: "MacBook Pro M2" },
-          { to: "/macbook-pro-m1", title: "MacBook Pro M1" },
-          {
-            to: "/macbook-pro-Intel",
-            title: "MacBook Pro Intel",
-            children: [
-              { to: "/macbook-pro-2020", title: "Macbook Pro 2020" },
-              { to: "/macbook-pro-2019", title: "Macbook Pro 2019" },
-            ],
-          },
-        ],
-      },
-      {
-        to: "/macbook-neo",
-        title: "Macbook Neo",
-      },
-    ],
-  },
-  {
-    to: "/imac-mac-desktop",
-    title: "iMac-Mac Desktop",
-    children: [
-      { to: "/imac", title: "iMac" },
-      {
-        to: "/mac-mini",
-        title: "Mac mini",
-        children: [
-          { to: "/mac-mini-m4", title: "Mac mini M4" },
-          { to: "/mac-mini-m2", title: "Mac mini M2" },
-          { to: "/mac-mini-m1", title: "Mac mini M1" },
-          { to: "/mac-mini-intel", title: "Mac mini Intel" },
-        ],
-      },
-      { to: "/mac-studio", title: "Mac Studio" },
-      { to: "/mac-pro", title: "Mac Pro" },
-      { to: "/apple-display", title: "Apple Display" },
-    ],
-  },
-  { to: "/ipad", title: "iPad" },
-  { to: "/iphone", title: "iPhone" },
-  { to: "/man-hinh", title: "Màn hình" },
-  { to: "/airpods", title: "AirPods" },
-  { to: "/phu-kien-apple-khac", title: "Phụ kiện Apple" },
-  { to: "/phu-kien", title: "Phụ kiện" },
-];
-
-const MenuItem = ({ item, depth = 0 }) => {
-  const isMainMenu = depth === 0;
-
-  let liClass = "";
-  let ulClass = "";
-  let aClass = "";
-  let activeClass = "";
-
-  if (isMainMenu) {
-    liClass = "relative py-[22px] whitespace-nowrap group/main";
-    ulClass =
-      "hidden absolute top-full left-0 min-w-[220px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/main:block";
-    aClass =
-      "text-white no-underline text-sm transition-colors duration-200 ease-in-out hover:text-[#0088cc]";
-    activeClass = "text-[#0088cc] font-bold";
-  } else if (depth === 1) {
-    liClass = "relative group/sub last:[&>a]:border-b-0";
-    ulClass =
-      "hidden absolute top-0 left-full min-w-[200px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/sub:block";
-    aClass =
-      "block text-white no-underline px-5 py-[14px] text-sm transition-all duration-200 ease-in-out border-b border-[#3c3c3c] font-normal hover:text-[#0088cc] hover:bg-[#1f1f1f]";
-    activeClass = "text-[#0088cc] bg-[#1f1f1f] font-bold";
-  } else {
-    liClass = "relative group/deep last:[&>a]:border-b-0";
-    ulClass =
-      "hidden absolute top-0 left-full min-w-[200px] bg-[#2c2c2c] shadow-[0_8px_16px_rgba(0,0,0,0.5)] rounded z-[100] group-hover/deep:block";
-    aClass =
-      "block text-white no-underline px-5 py-[14px] text-sm transition-all duration-200 ease-in-out border-b border-[#3c3c3c] font-normal hover:text-[#0088cc] hover:bg-[#1f1f1f]";
-    activeClass = "text-[#0088cc] bg-[#1f1f1f] font-bold";
-  }
-
-  return (
-    <li className={liClass}>
-      <NavLink
-        to={item.to}
-        className={({ isActive }) => `${aClass} ${isActive ? activeClass : ""}`}
-      >
-        {item.title}
-      </NavLink>
-      {item.children && (
-        <ul className={ulClass}>
-          {item.children.map((child, index) => (
-            <MenuItem key={index} item={child} depth={depth + 1} />
-          ))}
-        </ul>
-      )}
-    </li>
-  );
-};
-
-function Navigation() {
-  return (
-    <nav>
-      <ul className="flex items-center gap-8 list-none m-0 p-0">
-        {navItems.map((item, index) => (
-          <MenuItem key={index} item={item} />
-        ))}
-      </ul>
-    </nav>
-  );
+export default function Navigation() {
+    return (
+        <NavigationMenu className="max-w-none relative z-50" viewport={false}>
+            <NavigationMenuList className="gap-3 whitespace-nowrap">
+                {navItems.map((item, index) => (
+                    <NavigationMenuItem key={index}>
+                        {item.children ? (
+                            <>
+                                <NavigationMenuTrigger className="px-2 py-2 text-sm font-medium">
+                                    {item.title}
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent
+                                    className="
+                                        w-[240px] p-2
+                                        !data-[motion=from-end]:slide-in-from-right-0
+                                        !data-[motion=from-start]:slide-in-from-left-0
+                                        !data-[motion=to-end]:slide-out-to-right-0
+                                        !data-[motion=to-start]:slide-out-to-left-0
+                                        data-[motion^=from-]:slide-in-from-top-2
+                                        data-[motion^=to-]:slide-out-to-top-2
+                                    "
+                                >
+                                    <ul className="grid gap-1">
+                                        {item.children.map((child, i) => (
+                                            <li key={i}>
+                                                <NavigationMenuLink asChild>
+                                                    <Link
+                                                        to={child.to}
+                                                        className="block rounded-md px-3 py-2 text-sm hover:bg-muted"
+                                                    >
+                                                        <div className="font-medium">
+                                                            {child.title}
+                                                        </div>
+                                                        {child.description && (
+                                                            <p className="text-xs text-muted-foreground">
+                                                                {
+                                                                    child.description
+                                                                }
+                                                            </p>
+                                                        )}
+                                                    </Link>
+                                                </NavigationMenuLink>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </>
+                        ) : (
+                            <Link
+                                to={item.to}
+                                className="px-2 py-2 text-sm font-medium rounded-md hover:bg-muted"
+                            >
+                                {item.title}
+                            </Link>
+                        )}
+                    </NavigationMenuItem>
+                ))}
+            </NavigationMenuList>
+        </NavigationMenu>
+    );
 }
-
-export default Navigation;
