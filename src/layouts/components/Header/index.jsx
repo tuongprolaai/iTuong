@@ -5,6 +5,7 @@ import {
     faMagnifyingGlass,
     faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
+import { User } from "lucide-react";
 
 import logo from "@/assets/logo/logo.png";
 
@@ -23,6 +24,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 import Navigation from "../Navigation";
 
 import { Trash2 } from "lucide-react";
+import LoginModal from "@/pages/Login";
+import RegisterModal from "@/pages/Register";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -301,6 +304,37 @@ export default function Header() {
 
                         {/* Dark mode */}
                         <ModeToggle />
+
+                        {/* Auth Desktop */}
+                        <div className="hidden lg:flex items-center gap-2">
+                            <LoginModal />
+                            <RegisterModal />
+                        </div>
+
+                        {/* Auth Mobile */}
+                        <div className="lg:hidden">
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button variant="ghost" size="icon">
+                                        <User size={20} />
+                                    </Button>
+                                </PopoverTrigger>
+
+                                <PopoverContent align="end" className="w-40 ">
+                                    <Button
+                                        asChild
+                                        className="w-full"
+                                        variant="outline"
+                                    >
+                                        <Link to="/login">Đăng nhập</Link>
+                                    </Button>
+
+                                    <Button asChild className="w-full">
+                                        <Link to="/register">Đăng ký</Link>
+                                    </Button>
+                                </PopoverContent>
+                            </Popover>
+                        </div>
                     </div>
                 </div>
             </header>

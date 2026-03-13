@@ -19,6 +19,9 @@ import ScrollToTop from "@/components/ScrollToTop";
 import Collection from "@/pages/Collection";
 import ProductDetail from "@/pages/ProductDetail";
 import Cart from "@/pages/Cart";
+import AuthLayout from "@/layouts/AuthLayout";
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 // import Loading from "@/components/Loading";
 // import Cleanup from "@/pages/Cleanup";
 // import Cleanup2 from "@/pages/Cleanup2";
@@ -34,50 +37,32 @@ import Cart from "@/pages/Cart";
 // import Example2 from "@/pages/Redux/Example2";
 
 function AppRoutes() {
-  return (
-    <Router>
-      <ScrollToTop />
-      {/* <Loading /> */}
+    return (
+        <Router>
+            <ScrollToTop />
+            {/* <Loading /> */}
 
-      <Routes>
-        {/* <Route path="/admin" element={<AdminLayout />}>
+            <Routes>
+                {/* <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
         </Route> */}
 
-        {/* Default layout pages */}
-        <Route element={<DefaultLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/:slug" element={<Collection />} />
-          <Route path="/detail" element={<ProductDetail />} />
-          <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/:slug/:productId" element={<ProductDetail />} /> */}
-          {/* <Route path="news" element={<News />} />
-          <Route path="news/:id" element={<PostDetail />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="cleanup" element={<Cleanup />} /> */}
-        </Route>
+                {/* Default layout pages */}
+                <Route element={<DefaultLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/:slug" element={<Collection />} />
+                    <Route path="/detail" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                </Route>
 
-        {/* Sidebar layout pages */}
-        {/* <Route element={<SidebarLayout />}>
-          <Route path="news/trashed" element={<NewsTrashed />} />
-        </Route> */}
+                <Route element={<AuthLayout />}>
+                    <Route path="/login" element={<Login />} />
 
-        {/* No layout */}
-        {/* <Route path="use-state" element={<UseState />} />
-        <Route path="cleanup2" element={<Cleanup2 />} />
-        <Route path="hooks" element={<Hooks />} />
-        <Route path="hoc" element={<HOC />} />
-        <Route path="render-props" element={<RenderProps />} />
-        <Route path="custom-hook" element={<CustomHook />} />
-        <Route path="debounce" element={<Debounce />} />
-        <Route path="tabs-demo" element={<TabsDemo />} />
-        <Route path="forms" element={<Forms />} />
-        <Route path="context-api" element={<ContextAPI />} />
-        <Route path="redux" element={<Redux />} />
-        <Route path="redux/example2" element={<Example2 />} /> */}
-      </Routes>
-    </Router>
-  );
+                    <Route path="/register" element={<Register />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
 }
 
 export default AppRoutes;
